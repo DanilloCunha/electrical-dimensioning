@@ -1,0 +1,39 @@
+<div class="container mx-auto my-8">
+  <h1 class="text-2xl font-bold mb-4">Dimensionamento Elétrico</h1>
+
+  <%= form_tag do %>
+    <div class="mb-4">
+      <%= label_tag :voltage, 'Tensão (V)' %>
+      <%= select_tag :voltage, options_for_select([127, 220]), class: 'form-control' %>
+    </div>
+
+    <div class="mb-4">
+      <%= label_tag :power, 'Potência (W)' %>
+      <%= number_field_tag :power, nil, class: 'form-control' %>
+    </div>
+
+    <div class="mb-4">
+      <%= label_tag :distance, 'Distância (m)' %>
+      <%= number_field_tag :distance, nil, class: 'form-control' %>
+    </div>
+
+    <div class="mb-4">
+      <%= label_tag :circuit_type, 'Tipo de Circuito' %>
+      <%= select_tag :circuit_type, options_for_select(['Iluminação', 'Tomada', 'Chuveiro', 'Ar-Condicionado']), class: 'form-control' %>
+    </div>
+
+    <%= submit_tag 'Calcular Dimensionamento', class: 'btn btn-primary' %>
+  <% end %>
+
+  <% if @power.present? && @distance.present? && @circuit_type.present? %>
+    <div class="mt-8">
+      <h2 class="text-xl font-bold mb-4">Resultados</h2>
+      <p>Corrente: <%= @current.round(2) %> A</p>
+      <p>Bitola Sugerida: <%= @cable_section %></p>
+      <p>Disjuntor: <%= @circuit_breaker %> A</p>
+      <p>Queda de Tensão: <%= @voltage_drop.round(2) %>%</p>
+      <p>Conformidade: <%= @compliance %></p>
+      <p>Recomendação: <%= @recommendation %></p>
+    </div>
+  <% end %>
+</div>
