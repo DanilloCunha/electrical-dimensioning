@@ -22,18 +22,29 @@
       <%= select_tag :circuit_type, options_for_select(['Iluminação', 'Tomada', 'Chuveiro', 'Ar-Condicionado']), class: 'form-control' %>
     </div>
 
-    <%= submit_tag 'Calcular Dimensionamento', class: 'btn btn-primary' %>
-  <% end %>
-
-  <% if @power.present? && @distance.present? && @circuit_type.present? %>
-    <div class="mt-8">
-      <h2 class="text-xl font-bold mb-4">Resultados</h2>
-      <p>Corrente: <%= @current.round(2) %> A</p>
-      <p>Bitola Sugerida: <%= @cable_section %></p>
-      <p>Disjuntor: <%= @circuit_breaker %> A</p>
-      <p>Queda de Tensão: <%= @voltage_drop.round(2) %>%</p>
-      <p>Conformidade: <%= @compliance %></p>
-      <p>Recomendação: <%= @recommendation %></p>
+    <div class="container mx-auto mt-8 p-4 bg-white rounded shadow">
+      <h2 class="text-xl font-bold mb-4">Preencha os Dados</h2>
+      <%= form_with url: root_path, method: :get, local: true, class: "space-y-4" do |f| %>
+        <div>
+          <%= f.label :voltage, "Tensão (Volts)", class: "block font-medium" %>
+          <%= f.number_field :voltage, value: @voltage, class: "w-full border rounded px-2 py-1" %>
+        </div>
+        <div>
+          <%= f.label :power, "Potência (Watts)", class: "block font-medium" %>
+          <%= f.number_field :power, value: @power, class: "w-full border rounded px-2 py-1" %>
+        </div>
+        <div>
+          <%= f.label :distance, "Distância (Metros)", class: "block font-medium" %>
+          <%= f.number_field :distance, value: @distance, class: "w-full border rounded px-2 py-1" %>
+        </div>
+        <div>
+          <%= f.label :circuit_type, "Tipo de Circuito", class: "block font-medium" %>
+          <%= f.select :circuit_type, [["Monofásico", "monofasico"], ["Bifásico", "bifasico"], ["Trifásico", "trifasico"]], {}, class: "w-full border rounded px-2 py-1" %>
+        </div>
+        <div>
+          <%= f.submit "Calcular", class: "bg-blue-600 text-white px-4 py-2 rounded" %>
+        </div>
+      <% end %>
     </div>
-  <% end %>
-</div>
+
+
